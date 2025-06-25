@@ -4,7 +4,7 @@ var http = require('http');
 var server = http.createServer(function ( req, res ) {
     if(req.url == "/") {
         // file write Async
-       fs.writeFile('demo.txt', 'First time try to write in node js', function(err){
+       fs.rename('demo.txt', 'new-demo.txt', function(err){
         if(err) {
             res.writeHead(200, {'Content-type': 'text/html'});
             res.write("Failed to Write");
@@ -18,13 +18,13 @@ var server = http.createServer(function ( req, res ) {
     } else if(req.url == '/about') {
         // sync write file
          try {
-            fs.writeFileSync('sync-demo.txt', "Sync first time");
+            fs.renameSync('sync-demo.txt', 'sync-new.txt');
             res.writeHead(200, { 'Content-type': 'text/html' });
             res.write("Write Successfully");
             res.end();
         } catch (err) {
             res.writeHead(200, { 'Content-type': 'text/html' });
-            res.write("Failed to Write");
+            res.write("Failed to rename");
             res.end();
         }
     } else {
