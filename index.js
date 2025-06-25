@@ -3,18 +3,35 @@ var http = require('http');
 
 var server = http.createServer(function ( req, res ) {
     if(req.url == "/") {
-        // async fs.readFile(filePath, fileOptions, cb)
-        // fs.readFile('Home.html', function (err, data){
-        //     res.writeHead(200, {'Content-type': 'text/html'})
-        //     res.write(data);
-        //     res.end();
-        // } );
-
-        // sync
-        var mySite = fs.readFileSync('Home.html');
-        res.writeHead(200, {'Content-type': 'text/html'})
-        res.write(mySite);
+        // file write Async
+       fs.writeFile('demo.txt', 'First time try to write in node js', function(err){
+        if(err) {
+            res.writeHead(200, {'Content-type': 'text/html'});
+            res.write("Failed to Write");
+            res.end();
+        }else{
+            res.writeHead(200, {'Content-type': 'text/html'});
+            res.write("Write Successfully ");
+            res.end();
+        }
+       })
+    } else if(req.url == '/about') {
+        // sync write file
+         try {
+            fs.writeFileSync('sync-demo.txt', "Sync first time");
+            res.writeHead(200, { 'Content-type': 'text/html' });
+            res.write("Write Successfully");
+            res.end();
+        } catch (err) {
+            res.writeHead(200, { 'Content-type': 'text/html' });
+            res.write("Failed to Write");
+            res.end();
+        }
+    } else {
+        res.writeHead(404, { 'Content-type': 'text/html' });
+        res.write("404 Not Found");
         res.end();
+    
     }
 })
 
